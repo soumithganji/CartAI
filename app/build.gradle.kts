@@ -1,7 +1,11 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
 }
+
 
 android {
     namespace = "com.example.myapplicationeasyaiorder"
@@ -12,15 +16,28 @@ android {
     defaultConfig {
         applicationId = "com.example.myapplicationeasyaiorder"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localProperties.load(FileInputStream(localPropertiesFile))
+        }
+
+        buildConfigField("String", "KROGER_CLIENT_ID", "${localProperties.getProperty("KROGER_CLIENT_ID")}")
+        buildConfigField("String", "KROGER_CLIENT_SECRET", "${localProperties.getProperty("KROGER_CLIENT_SECRET")}")
+        buildConfigField("String", "NVIDIA_API_KEY", "${localProperties.getProperty("NVIDIA_API_KEY")}")
+
+        manifestPlaceholders["appAuthRedirectScheme"] = "com.example.myapplicationeasyaiorder"
     }
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -73,4 +90,7 @@ dependencies {
 
     // Gemini
     implementation(libs.generativeai)
+    
+    // AppAuth
+    implementation(libs.appauth)
 }

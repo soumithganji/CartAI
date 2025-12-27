@@ -19,9 +19,15 @@ class EasyOrderViewModelFactory(private val context: Context) : ViewModelProvide
             return CartViewModel(com.example.myapplicationeasyaiorder.data.CartRepository(authManager)) as T
         }
         if (modelClass.isAssignableFrom(com.example.myapplicationeasyaiorder.ui.chat.ChatViewModel::class.java)) {
-            // TODO: Retrieve API Key from Secrets/Preferences
+            val apiKey = com.example.myapplicationeasyaiorder.BuildConfig.NVIDIA_API_KEY
+            val authManager = KrogerAuthManager(context)
+            // Inject ProductRepository into ChatViewModel for "smart add" features
+            val productRepo = com.example.myapplicationeasyaiorder.data.ProductRepository(authManager)
+            val cartRepo = com.example.myapplicationeasyaiorder.data.CartRepository(authManager)
             return com.example.myapplicationeasyaiorder.ui.chat.ChatViewModel(
-                com.example.myapplicationeasyaiorder.data.AiRepositoryImpl("TODO_GEMINI_API_KEY")
+                com.example.myapplicationeasyaiorder.data.AiRepositoryImpl(apiKey),
+                productRepo,
+                cartRepo
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

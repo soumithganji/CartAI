@@ -21,7 +21,9 @@ class CartFragment : Fragment() {
         EasyOrderViewModelFactory(requireContext())
     }
 
-    private val cartAdapter = CartAdapter()
+    private val cartAdapter = CartAdapter { item, newQty ->
+        viewModel.updateQuantity(item, newQty)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

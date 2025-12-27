@@ -26,40 +26,9 @@
         android:text="Your AI Cart Manager"
         android:textSize="18sp"
         android:textColor="@android:color/darker_gray"
-        app:layout_constraintBottom_toTopOf="@+id/clientIdInput"
+        app:layout_constraintBottom_toTopOf="@+id/loginButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/clientIdInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Client ID"
-        android:layout_marginTop="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/clientSecretInput"
-        app:layout_constraintTop_toBottomOf="@+id/subtitleText"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/clientSecretInput"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Client Secret"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/loginButton"
-        app:layout_constraintTop_toBottomOf="@+id/clientIdInput"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword" />
-    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/loginButton"
@@ -69,7 +38,7 @@
         android:text="Connect to Kroger"
         android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clientSecretInput"
+        app:layout_constraintTop_toBottomOf="@+id/subtitleText"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ProgressBar

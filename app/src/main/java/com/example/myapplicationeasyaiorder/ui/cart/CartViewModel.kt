@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplicationeasyaiorder.data.CartRepository
 import com.example.myapplicationeasyaiorder.model.Cart
+import com.example.myapplicationeasyaiorder.model.CartItem
 import com.example.myapplicationeasyaiorder.model.Resource
 import kotlinx.coroutines.launch
 
@@ -14,20 +15,45 @@ class CartViewModel(private val repository: CartRepository) : ViewModel() {
     val cartState: LiveData<Resource<Cart>> = _cartState
 
     fun loadCart() {
+        android.util.Log.d("CartViewModel", "loadCart() called")
         _cartState.value = Resource.Loading
         viewModelScope.launch {
+            android.util.Log.d("CartViewModel", "Coroutine started, calling repository.getCart()")
             when (val result = repository.getCart()) {
                 is Resource.Success -> {
+                    android.util.Log.d("CartViewModel", "Success: ${result.data.data.items.size} items")
                     _cartState.value = Resource.Success(result.data.data)
                 }
                 is Resource.Error -> {
-                    // Start with empty cart if not found or error for now?
-                    // Better to show error.
+                    android.util.Log.e("CartViewModel", "Error: ${result.message}")
                     _cartState.value = Resource.Error(result.message)
                 }
                 is Resource.Loading -> {
-                    _cartState.value = Resource.Loading
+                     // no-op
                 }
+            }
+        }
+    }
+
+    fun updateQuantity(item: CartItem, newQuantity: Int) {
+        viewModelScope.launch {
+            val request = com.example.myapplicationeasyaiorder.model.CartUpdateRequest(
+                items = listOf(
+                    com.example.myapplicationeasyaiorder.model.CartItemRequest(
+                        upc = item.itemId,
+                        quantity = newQuantity
+                    )
+                )
+            )
+            // Optimistic update or wait? Wait for now.
+            when (val result = repository.updateCart(request)) {
+                is Resource.Success -> {
+                    loadCart() // Refresh cart after update
+                }
+                is Resource.Error -> {
+                    // Show error? For now just log or do nothing.
+                }
+                else -> {}
             }
         }
     }

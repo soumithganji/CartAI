@@ -25,7 +25,7 @@ interface KrogerApiService {
     ): Response<ProductResponse>
 
     // Cart
-    @GET("cart")
+    @GET("carts")
     suspend fun getCart(
         @Header("Authorization") token: String
     ): Response<CartResponse>

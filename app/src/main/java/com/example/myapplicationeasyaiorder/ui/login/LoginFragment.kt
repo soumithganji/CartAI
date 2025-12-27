@@ -14,6 +14,11 @@ import com.example.myapplicationeasyaiorder.data.KrogerAuthManager
 import com.example.myapplicationeasyaiorder.ui.EasyOrderViewModelFactory
 import androidx.navigation.fragment.findNavController
 
+import android.content.Intent
+import androidx.activity.result.contract.ActivityResultContracts
+import net.openid.appauth.AuthorizationException
+import net.openid.appauth.AuthorizationResponse
+
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
@@ -21,6 +26,27 @@ class LoginFragment : Fragment() {
 
     private val viewModel: LoginViewModel by viewModels {
         EasyOrderViewModelFactory(requireContext())
+    }
+    
+    // AppAuth Intent Launcher
+    private val authLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == android.app.Activity.RESULT_OK) {
+            val data = result.data ?: return@registerForActivityResult
+            val response = AuthorizationResponse.fromIntent(data)
+            val exception = AuthorizationException.fromIntent(data)
+            
+            if (response != null) {
+                // Exchange code for token
+                // We need the secret from BuildConfig
+                val secret = com.example.myapplicationeasyaiorder.BuildConfig.KROGER_CLIENT_SECRET
+                viewModel.handleAuthResponse(response, secret)
+            } else {
+                Toast.makeText(context, "Auth Failed: ${exception?.message}", Toast.LENGTH_LONG).show()
+                viewModel.resetLoginState()
+            }
+        } else {
+             viewModel.resetLoginState()
+        }
     }
 
     override fun onCreateView(
@@ -35,14 +61,13 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.loginButton.setOnClickListener {
-            val clientId = binding.clientIdInput.editText?.text.toString()
-            val secret = binding.clientSecretInput.editText?.text.toString()
+            val clientId = com.example.myapplicationeasyaiorder.BuildConfig.KROGER_CLIENT_ID
             
-            if (clientId.isNotBlank() && secret.isNotBlank()) {
-                // Using Guest/Client Credentials flow for initial setup
-                viewModel.loginAsGuest(clientId, secret)
+            if (!clientId.isNullOrEmpty()) {
+                val intent = viewModel.getAuthIntent(clientId)
+                authLauncher.launch(intent)
             } else {
-                Toast.makeText(context, "Please enter API Keys", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Missing Client ID!", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -56,7 +81,6 @@ class LoginFragment : Fragment() {
                     binding.loadingBar.visibility = View.GONE
                     binding.loginButton.isEnabled = true
                     Toast.makeText(context, "Connected Successfully!", Toast.LENGTH_SHORT).show()
-                    // Navigate to Cart
                     findNavController().navigate(com.example.myapplicationeasyaiorder.R.id.cartFragment)
                 }
                 is LoginState.Error -> {
@@ -64,7 +88,10 @@ class LoginFragment : Fragment() {
                     binding.loginButton.isEnabled = true
                     Toast.makeText(context, state.message, Toast.LENGTH_LONG).show()
                 }
-                else -> {}
+                else -> {
+                     binding.loadingBar.visibility = View.GONE
+                     binding.loginButton.isEnabled = true
+                }
             }
         }
     }

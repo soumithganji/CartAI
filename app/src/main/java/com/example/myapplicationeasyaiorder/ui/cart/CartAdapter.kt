@@ -8,22 +8,36 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplicationeasyaiorder.databinding.ItemCartBinding
 import com.example.myapplicationeasyaiorder.model.CartItem
 
-class CartAdapter : ListAdapter<CartItem, CartAdapter.CartViewHolder>(CartDiffCallback()) {
+class CartAdapter(
+    private val onQuantityChanged: (CartItem, Int) -> Unit
+) : ListAdapter<CartItem, CartAdapter.CartViewHolder>(CartDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
         val binding = ItemCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CartViewHolder(binding)
+        return CartViewHolder(binding, onQuantityChanged)
     }
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         holder.bind(getItem(position))
     }
 
-    class CartViewHolder(private val binding: ItemCartBinding) : RecyclerView.ViewHolder(binding.root) {
+    class CartViewHolder(
+        private val binding: ItemCartBinding,
+        private val onQuantityChanged: (CartItem, Int) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: CartItem) {
             binding.itemName.text = "Item ${item.itemId}" // Make description later if populated
             binding.itemPrice.text = "$%.2f".format(item.price)
-            binding.itemQuantity.text = "Qty: ${item.quantity}"
+            binding.itemQuantity.text = "${item.quantity}"
+
+            binding.btnPlus.setOnClickListener {
+                onQuantityChanged(item, item.quantity + 1)
+            }
+            binding.btnMinus.setOnClickListener {
+                if (item.quantity > 0) {
+                    onQuantityChanged(item, item.quantity - 1)
+                }
+            }
         }
     }
 
