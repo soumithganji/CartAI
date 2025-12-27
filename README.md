@@ -28,7 +28,7 @@
 
 **CartAI** is an intelligent Android application that revolutionizes grocery shopping by combining **natural language processing**, **computer vision**, and **seamless e-commerce integration**. Simply tell the app what you want to cook, scan a handwritten shopping list, or chat naturally about your grocery needs—CartAI handles the rest.
 
-The app bridges the gap between AI-powered assistance and real-world shopping by directly integrating with grocery retailer APIs, allowing users to search products, manage carts, and prepare orders without ever leaving the conversation.
+The app bridges the gap between AI-powered assistance and real-world shopping by directly integrating with grocery retailer APIs. **Currently integrated with Kroger APIs**, the app allows users to search real products with live pricing, manage carts, and prepare orders—all without ever leaving the conversation. The modular architecture is designed to support additional retailers in the future.
 
 ### Why CartAI?
 
