@@ -2,16 +2,17 @@ package com.example.myapplicationeasyaiorder.ui.camera
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -51,11 +52,11 @@ class CameraFragment : Fragment() {
         }
     }
 
-    // Camera capture
+    // Camera capture with back camera preference
     private val takePictureLauncher = registerForActivityResult(
-        ActivityResultContracts.TakePicture()
-    ) { success ->
-        if (success && tempImageUri != null) {
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == android.app.Activity.RESULT_OK && tempImageUri != null) {
             processImage(tempImageUri!!)
         }
     }
@@ -168,7 +169,18 @@ class CameraFragment : Fragment() {
                 photoFile
             )
             
-            takePictureLauncher.launch(tempImageUri)
+            // Create intent with back camera preference
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                putExtra(MediaStore.EXTRA_OUTPUT, tempImageUri)
+                // Try multiple extras for back camera compatibility across devices
+                putExtra("android.intent.extras.CAMERA_FACING", android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK)
+                putExtra("android.intent.extras.LENS_FACING_BACK", 1)
+                putExtra("android.intent.extra.USE_FRONT_CAMERA", false)
+                putExtra("camerafacing", "rear")
+                putExtra("previous_mode", "rear")
+            }
+            
+            takePictureLauncher.launch(cameraIntent)
         } catch (e: Exception) {
             android.util.Log.e("CameraFragment", "Error launching camera", e)
             Toast.makeText(context, "Error launching camera: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -249,16 +261,6 @@ class CameraFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         adapter.submitList(items.toList())
-
-        // Add unavailable items text if any
-        if (unavailable.isNotEmpty()) {
-            val unavailableText = TextView(requireContext()).apply {
-                text = "⚠️ Not found: ${unavailable.joinToString(", ")}"
-                setPadding(32, 16, 32, 0)
-                setTextColor(resources.getColor(android.R.color.holo_orange_dark, null))
-            }
-            (dialogView as ViewGroup).addView(unavailableText, 1)
-        }
 
         confirmDialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)

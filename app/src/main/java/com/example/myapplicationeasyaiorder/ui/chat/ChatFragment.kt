@@ -91,16 +91,6 @@ class ChatFragment : Fragment() {
         recyclerView.adapter = adapter
         adapter.submitList(items.toList())
         
-        // Add unavailable items text if any
-        if (unavailable.isNotEmpty()) {
-            val unavailableText = TextView(requireContext()).apply {
-                text = "⚠️ Not found: ${unavailable.joinToString(", ")}"
-                setPadding(32, 16, 32, 0)
-                setTextColor(resources.getColor(android.R.color.holo_orange_dark, null))
-            }
-            (dialogView as ViewGroup).addView(unavailableText, 1)
-        }
-        
         confirmDialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .setCancelable(false)

@@ -57,4 +57,25 @@ class CartViewModel(private val repository: CartRepository) : ViewModel() {
             }
         }
     }
+    fun removeItem(itemId: String) {
+        viewModelScope.launch {
+            val request = com.example.myapplicationeasyaiorder.model.CartUpdateRequest(
+                items = listOf(
+                    com.example.myapplicationeasyaiorder.model.CartItemRequest(
+                        upc = itemId,
+                        quantity = 0 // 0 means remove in Kroger API
+                    )
+                )
+            )
+            when (val result = repository.updateCart(request)) {
+                is Resource.Success -> {
+                    loadCart()
+                }
+                else -> {
+                    // Log error
+                    android.util.Log.e("CartViewModel", "Failed to remove item $itemId")
+                }
+            }
+        }
+    }
 }

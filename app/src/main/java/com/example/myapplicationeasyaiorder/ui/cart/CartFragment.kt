@@ -16,7 +16,9 @@ class CartFragment : Fragment() {
     private var _binding: FragmentCartBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var cartAdapter: LocalCartAdapter
+    private val viewModel: CartViewModel by androidx.fragment.app.viewModels {
+        com.example.myapplicationeasyaiorder.ui.EasyOrderViewModelFactory(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +34,13 @@ class CartFragment : Fragment() {
         cartAdapter = LocalCartAdapter(
             onQuantityChange = { item, newQty ->
                 LocalCartRepository.updateQuantity(item.productId, newQty)
+                // TODO: Sync quantity updates too? For now just local.
             },
             onRemove = { item ->
+                // Remove from local cart
                 LocalCartRepository.removeItem(item.productId)
+                // Also sync removal to Kroger API
+                viewModel.removeItem(item.productId)
             }
         )
 

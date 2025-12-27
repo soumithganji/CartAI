@@ -30,19 +30,19 @@ class LocalCartAdapter(
         fun bind(item: LocalCartItem) {
             binding.itemName.text = item.name
             binding.itemPrice.text = "$${String.format("%.2f", item.price)}"
-            binding.quantityText.text = item.quantity.toString()
+            binding.itemQuantity.text = item.quantity.toString()
 
-            binding.btnIncrease.setOnClickListener {
+            binding.btnPlus.setOnClickListener {
                 onQuantityChange(item, item.quantity + 1)
             }
 
-            binding.btnDecrease.setOnClickListener {
+            binding.btnMinus.setOnClickListener {
                 if (item.quantity > 1) {
                     onQuantityChange(item, item.quantity - 1)
                 }
             }
 
-            binding.btnRemove.setOnClickListener {
+            binding.btnDelete.setOnClickListener {
                 onRemove(item)
             }
         }
