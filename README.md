@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="#features">Features</a> •
-  <a href="#demo">Demo</a> •
+  <a href="#screenshots">Screenshots</a> •
   <a href="#architecture">Architecture</a> •
   <a href="#getting-started">Getting Started</a> •
   <a href="#tech-stack">Tech Stack</a> •
@@ -20,8 +20,6 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Platform-Android-3DDC84?style=flat-square&logo=android" alt="Platform"/>
   <img src="https://img.shields.io/badge/Kotlin-2.0.21-7F52FF?style=flat-square&logo=kotlin" alt="Kotlin"/>
-  <img src="https://img.shields.io/badge/Min%20SDK-24-brightgreen?style=flat-square" alt="Min SDK"/>
-  <img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="License"/>
 </p>
 
 ---
@@ -45,7 +43,7 @@ The app bridges the gap between AI-powered assistance and real-world shopping by
 
 ## Features
 
-### 💬 Conversational Shopping
+###  Conversational Shopping
 Interact naturally with an AI assistant powered by **Llama 3.1**. Ask for recipe ingredients, add items to cart, or get product recommendations—all through conversation.
 
 ```
@@ -58,21 +56,44 @@ CartAI: Finding ingredients for white sauce pasta...
         ✓ Garlic - $0.99
 ```
 
-### 📸 Smart List Scanning
+###  Smart List Scanning
 Capture photos of handwritten or printed shopping lists. The **Llama 3.2 Vision** model extracts items with quantities, even from messy handwriting.
 
 - **OCR-powered extraction** with quantity detection
 - **Handwritten and printed** text support
 - **Multi-line parsing** for complex lists
 
-### 🛒 Real-Time Cart Management
+###  Real-Time Cart Management
 - **Dual cart system**: Local staging cart + retailer cart sync
 - **Quantity controls** with real-time price updates
 - **Product images** and descriptions from retailer API
 - **One-tap checkout** preparation
 
-### 🔐 Secure OAuth 2.0 Authentication
+###  Secure OAuth 2.0 Authentication
 Industry-standard authentication using **AppAuth** library with PKCE flow for secure API access without exposing credentials.
+
+---
+
+## Screenshots
+
+<p align="center">
+  <img src="screenshots/chat.jpg" width="200" alt="Chat Screen"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/review.jpg" width="200" alt="Review Screen"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/scan.jpg" width="200" alt="Scan List Screen"/>
+  &nbsp;&nbsp;
+  <img src="screenshots/cart.jpg" width="200" alt="Cart Screen"/>
+</p>
+
+<p align="center">
+  <em>Login</em> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <em>Chat</em> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <em>Scan List</em> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <em>Cart</em>
+</p>
+
+> **Note**: Add your screenshots to a `screenshots/` folder in the repository root.
 
 ---
 
@@ -82,28 +103,28 @@ CartAI follows **MVVM (Model-View-ViewModel)** architecture with clean separatio
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        UI Layer                              │
+│                        UI Layer                             │
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐          │
-│  │ ChatFragment│  │CameraFragment│  │ CartFragment │          │
+│  │ ChatFragment│  │CameraFragmen│  │ CartFragment│          │
 │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘          │
-│         │                │                │                  │
+│         │                │                │                 │
 │  ┌──────▼──────┐  ┌──────▼──────┐  ┌──────▼──────┐          │
-│  │ChatViewModel│  │ScanViewModel│  │CartViewModel │          │
+│  │ChatViewModel│  │ScanViewModel│  │CartViewModel│          │
 │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘          │
 └─────────┼────────────────┼────────────────┼─────────────────┘
           │                │                │
 ┌─────────▼────────────────▼────────────────▼─────────────────┐
-│                     Repository Layer                         │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌──────────────┐ │
-│  │  AiRepository   │  │ ProductRepository│  │CartRepository│ │
-│  └────────┬────────┘  └────────┬────────┘  └──────┬───────┘ │
-└───────────┼────────────────────┼──────────────────┼─────────┘
-            │                    │                  │
-┌───────────▼────────────────────▼──────────────────▼─────────┐
-│                      Network Layer                           │
+│                     Repository Layer                        │
+│  ┌─────────────────┐  ┌─────────────────┐   ┌──────────────┐│
+│  │  AiRepository   │  │ProductRepository│   │CartRepository││
+│  └────────┬────────┘  └────────┬────────┘   └──────┬───────┘│
+└───────────┼────────────────────┼───────────────────┼────────┘
+            │                    │                   │
+┌───────────▼────────────────────▼───────────────────▼────────┐
+│                      Network Layer                          │
 │  ┌─────────────────┐              ┌─────────────────┐       │
-│  │ NvidiaNimService│              │ KrogerApiService │       │
-│  │  (AI Models)    │              │ (Retailer API)   │       │
+│  │ NvidiaNimService│              │ KrogerApiService│       │
+│  │  (AI Models)    │              │ (Retailer API)  │       │
 │  └─────────────────┘              └─────────────────┘       │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -302,51 +323,11 @@ app/src/main/java/com/example/myapplicationeasyaiorder/
 
 | Retailer | Status | Notes |
 |----------|--------|-------|
-| **Walmart** | 🔜 Planned | Grocery API integration |
-| **Instacart** | 🔜 Planned | Multi-store support |
-| **Amazon Fresh** | 🔜 Planned | Prime integration |
-| **Target** | 🔜 Planned | Same-day delivery |
-| **Whole Foods** | 🔜 Planned | Amazon ecosystem |
-
-### Planned Features
-
-- [ ] **Multi-retailer support** - Compare prices across stores
-- [ ] **Shopping list persistence** - Save and reuse lists
-- [ ] **Smart reordering** - Predict recurring purchases
-- [ ] **Dietary preferences** - Filter by allergies, diet type
-- [ ] **Budget tracking** - Set spending limits
-- [ ] **Store locator** - Find nearest stores with inventory
-- [ ] **Price tracking** - Alert when items go on sale
-- [ ] **Family sharing** - Collaborative shopping lists
-- [ ] **Wear OS companion** - Quick adds from smartwatch
-- [ ] **Widget support** - Home screen quick actions
-
----
-
-## Contributing
-
-Contributions are welcome! Please read our contributing guidelines before submitting PRs.
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Acknowledgments
-
-- [NVIDIA NIM](https://developer.nvidia.com/nim) for AI inference infrastructure
-- [Meta Llama](https://llama.meta.com/) for open-source LLM models
-- [Kroger Developer](https://developer.kroger.com/) for grocery API
-- [AppAuth](https://appauth.io/) for OAuth 2.0 implementation
+| **Walmart** |  Planned | Grocery API integration |
+| **Instacart** |  Planned | Multi-store support |
+| **Amazon Fresh** |  Planned | Prime integration |
+| **Target** |  Planned | Same-day delivery |
+| **Whole Foods** |  Planned | Amazon ecosystem |
 
 ---
 
