@@ -23,8 +23,14 @@ data class ProductPrice(
 )
 
 data class ProductImage(
-    val url: String,
-    val perspective: String // front, back, etc.
+    val url: String? = null,
+    val perspective: String? = null, // front, back, etc.
+    val sizes: List<ImageSize>? = null
+)
+
+data class ImageSize(
+    val size: String,
+    val url: String
 )
 
 data class CartResponse(

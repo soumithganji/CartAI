@@ -254,6 +254,20 @@ List 5-8 main ingredients only. No quantities, no numbers, no instructions."""
         val foundItems = mutableListOf<PendingCartItem>()
         val notFoundItems = mutableListOf<String>()
         
+        // Helper function to extract image URL
+        fun getProductImageUrl(product: com.example.myapplicationeasyaiorder.model.Product): String? {
+            val image = product.images.find { it.perspective == "front" } ?: product.images.firstOrNull() ?: return null
+            
+            return if (!image.sizes.isNullOrEmpty()) {
+                image.sizes.find { it.size == "medium" }?.url 
+                    ?: image.sizes.find { it.size == "large" }?.url
+                    ?: image.sizes.find { it.size == "small" }?.url
+                    ?: image.sizes.first().url
+            } else {
+                image.url
+            }
+        }
+        
         for (ingredient in ingredients) {
             android.util.Log.d("ChatViewModel", "Searching for ingredient: $ingredient")
             when (val productResult = productRepository.findCheapestVariant(ingredient)) {
@@ -268,7 +282,7 @@ List 5-8 main ingredients only. No quantities, no numbers, no instructions."""
                                 name = product.description,
                                 price = item.price?.regular ?: 0.0,
                                 quantity = 1,
-                                imageUrl = product.images.firstOrNull()?.url
+                                imageUrl = getProductImageUrl(product)
                             )
                         )
                     } else {
@@ -311,7 +325,19 @@ List 5-8 main ingredients only. No quantities, no numbers, no instructions."""
                    when (val cartResult = cartRepository.updateCart(cartRequest)) {
                        is com.example.myapplicationeasyaiorder.model.Resource.Success -> {
                             // Add to local session cart
-                            val imageUrl = product.images.firstOrNull()?.url
+                            // Logic duplicated from above or extracted if possible. 
+                            // Since getProductImageUrl is defined in handleRecipeAdd, we need to redefine or move it.
+                            // For simplicity, I'll inline the extraction logic here or move it to class level in next step if cleaner.
+                            // Actually, I'll implement the logic directly here to match.
+                            val image = product.images.find { it.perspective == "front" } ?: product.images.firstOrNull()
+                            val imageUrl = if (!image?.sizes.isNullOrEmpty()) {
+                                image?.sizes?.find { it.size == "medium" }?.url 
+                                    ?: image?.sizes?.find { it.size == "large" }?.url
+                                    ?: image?.sizes?.first()?.url
+                            } else {
+                                image?.url
+                            }
+                            
                             com.example.myapplicationeasyaiorder.data.LocalCartRepository.addItem(
                                 com.example.myapplicationeasyaiorder.data.LocalCartRepository.LocalCartItem(
                                     productId = item.itemId,

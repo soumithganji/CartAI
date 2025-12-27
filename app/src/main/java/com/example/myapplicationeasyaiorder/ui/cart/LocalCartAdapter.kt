@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.myapplicationeasyaiorder.data.LocalCartRepository.LocalCartItem
 import com.example.myapplicationeasyaiorder.databinding.ItemLocalCartBinding
 
@@ -28,6 +29,16 @@ class LocalCartAdapter : ListAdapter<LocalCartItem, LocalCartAdapter.ViewHolder>
             binding.itemName.text = item.name
             binding.itemPrice.text = "$${String.format("%.2f", item.price)}"
             binding.itemQuantity.text = "Qty: ${item.quantity}"
+
+            if (!item.imageUrl.isNullOrEmpty()) {
+                binding.itemImage.load(item.imageUrl) {
+                    crossfade(true)
+                    placeholder(android.R.drawable.ic_menu_gallery)
+                    error(android.R.drawable.ic_menu_report_image)
+                }
+            } else {
+                binding.itemImage.load(android.R.drawable.ic_menu_gallery)
+            }
         }
     }
 

@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.myapplicationeasyaiorder.databinding.ItemPendingCartBinding
 
 data class PendingCartItem(
@@ -38,6 +39,16 @@ class PendingCartAdapter(
             binding.itemName.text = item.name
             binding.itemPrice.text = "$${String.format("%.2f", item.price)}"
             binding.quantityText.text = item.quantity.toString()
+
+            if (!item.imageUrl.isNullOrEmpty()) {
+                binding.itemImage.load(item.imageUrl) {
+                    crossfade(true)
+                    placeholder(android.R.drawable.ic_menu_gallery)
+                    error(android.R.drawable.ic_menu_report_image)
+                }
+            } else {
+                binding.itemImage.load(android.R.drawable.ic_menu_gallery)
+            }
 
             binding.btnIncrease.setOnClickListener {
                 onQuantityChange(item, item.quantity + 1)

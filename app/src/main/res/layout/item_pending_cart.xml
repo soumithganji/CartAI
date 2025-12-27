@@ -12,19 +12,29 @@
         android:layout_height="wrap_content"
         android:padding="12dp">
 
-        <!-- Item Name - constrained to not overlap with quantity controls -->
+        <ImageView
+            android:id="@+id/itemImage"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerInside"
+            android:contentDescription="Product Image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- Item Name - constrained to right of image with margin -->
         <TextView
             android:id="@+id/itemName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Item Name"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            android:textSize="11sp"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:layout_marginEnd="8dp"
+            android:layout_marginStart="10dp"
             app:layout_constraintEnd_toStartOf="@+id/quantityLayout"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/itemImage"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Price below name -->
@@ -36,7 +46,7 @@
             android:textSize="12sp"
             android:textColor="@color/text_secondary"
             android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/itemName"
             app:layout_constraintTop_toBottomOf="@+id/itemName" />
 
         <!-- Quantity controls on the right -->
@@ -87,7 +97,7 @@
 
         </LinearLayout>
 
-        <!-- Delete button - smaller -->
+        <!-- Delete button -->
         <ImageButton
             android:id="@+id/btnRemove"
             android:layout_width="24dp"
