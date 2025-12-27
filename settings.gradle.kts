@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "EasyOrderAI"
+rootProject.name = "CartAI"
 include(":app")
  

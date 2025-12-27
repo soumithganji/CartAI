@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme - Green and White -->
-    <style name="Base.Theme.EasyOrderAI" parent="Theme.Material3.Light.NoActionBar">
+    <style name="Base.Theme.CartAI" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary colors - Green -->
         <item name="colorPrimary">@color/green_primary</item>
         <item name="colorPrimaryDark">@color/green_primary_dark</item>
@@ -32,7 +32,7 @@
         <item name="colorOnError">@color/white</item>
     </style>
 
-    <style name="Theme.EasyOrderAI" parent="Base.Theme.EasyOrderAI" />
+    <style name="Theme.CartAI" parent="Base.Theme.CartAI" />
     
     <!-- Green Button Style -->
     <style name="GreenButton" parent="Widget.Material3.Button">
@@ -52,9 +52,9 @@
     </style>
     
     <!-- Splash Screen Theme -->
-    <style name="Theme.EasyOrderAI.Starting" parent="Theme.SplashScreen">
+    <style name="Theme.CartAI.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/green_primary</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/app_logo</item>
-        <item name="postSplashScreenTheme">@style/Theme.EasyOrderAI</item>
+        <item name="postSplashScreenTheme">@style/Theme.CartAI</item>
     </style>
 </resources>
