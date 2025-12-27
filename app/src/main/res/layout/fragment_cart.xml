@@ -76,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="View Cart on Kroger"
+            android:text="Add items to your cart"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/text_primary" />
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginHorizontal="16dp"
-            android:text="Kroger's API allows adding items to your cart.\n\nUse the Chat or Scan tab to add items, then view your complete cart on Kroger.com or the Kroger app."
+            android:text="Use the Chat or Scan tab to add items, then view your complete cart here"
             android:textAlignment="center"
             android:textColor="@color/text_secondary"
             android:lineSpacingMultiplier="1.4" />

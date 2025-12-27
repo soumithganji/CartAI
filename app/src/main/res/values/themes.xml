@@ -50,4 +50,11 @@
     <style name="App.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
         <item name="android:color">@color/green_primary</item>
     </style>
+    
+    <!-- Splash Screen Theme -->
+    <style name="Theme.EasyOrderAI.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/green_primary</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.EasyOrderAI</item>
+    </style>
 </resources>

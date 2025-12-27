@@ -3,6 +3,7 @@ package com.example.myapplicationeasyaiorder
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.myapplicationeasyaiorder.data.AuthState
 import com.example.myapplicationeasyaiorder.databinding.ActivityMainBinding
 
@@ -11,6 +12,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Install splash screen - must be before super.onCreate()
+        installSplashScreen()
+        
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
