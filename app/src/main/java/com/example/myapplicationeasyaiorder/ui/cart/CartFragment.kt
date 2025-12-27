@@ -55,9 +55,19 @@ class CartFragment : Fragment() {
             }
         }
 
-        binding.openKrogerButton.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.kroger.com/cart"))
-            startActivity(intent)
+        binding.btnOpenKrogerApp.setOnClickListener {
+            val packageName = "com.kroger.mobile"
+            val launchIntent = requireContext().packageManager.getLaunchIntentForPackage(packageName)
+            if (launchIntent != null) {
+                startActivity(launchIntent)
+            } else {
+                // Fallback to Play Store or Website
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                } catch (e: android.content.ActivityNotFoundException) {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.kroger.com/cart")))
+                }
+            }
         }
     }
 

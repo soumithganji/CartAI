@@ -36,7 +36,7 @@
         android:padding="8dp"
         android:clipToPadding="false"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnOpenKrogerApp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headerLayout"
@@ -60,7 +60,7 @@
         android:orientation="vertical"
         android:gravity="center"
         android:padding="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnOpenKrogerApp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headerLayout">
@@ -89,16 +89,23 @@
             android:textColor="@color/text_secondary"
             android:lineSpacingMultiplier="1.4" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/openKrogerButton"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:layout_marginTop="24dp"
-            android:text="🌐 Open Kroger.com"
-            android:textAllCaps="false"
-            app:backgroundTint="@color/green_primary"
-            app:cornerRadius="12dp" />
-
     </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOpenKrogerApp"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_margin="16dp"
+        android:text="Redirect to Kroger App"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/green_primary"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

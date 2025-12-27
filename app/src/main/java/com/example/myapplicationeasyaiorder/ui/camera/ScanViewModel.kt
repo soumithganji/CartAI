@@ -76,6 +76,19 @@ class ScanViewModel(
         }
     }
 
+    private fun getProductImageUrl(product: com.example.myapplicationeasyaiorder.model.Product): String? {
+        val image = product.images.find { it.perspective == "front" } ?: product.images.firstOrNull() ?: return null
+        
+        return if (!image.sizes.isNullOrEmpty()) {
+            image.sizes.find { it.size == "medium" }?.url 
+                ?: image.sizes.find { it.size == "large" }?.url
+                ?: image.sizes.find { it.size == "small" }?.url
+                ?: image.sizes.first().url
+        } else {
+            image.url
+        }
+    }
+
     private suspend fun searchProducts(items: List<ParsedItem>) {
         val foundItems = mutableListOf<PendingCartItem>()
         val notFoundItems = mutableListOf<String>()
@@ -95,7 +108,7 @@ class ScanViewModel(
                                 name = product.description,
                                 price = productItem.price?.regular ?: 0.0,
                                 quantity = item.quantity,
-                                imageUrl = product.images.firstOrNull()?.url
+                                imageUrl = getProductImageUrl(product)
                             )
                         )
                     } else {
